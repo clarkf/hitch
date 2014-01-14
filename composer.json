@@ -1,0 +1,16 @@
+{
+    "name": "clarkf/hitch",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Clark Fischer",
+            "email": "clark.fischer@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7"
+    }
+}
