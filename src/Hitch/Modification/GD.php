@@ -6,7 +6,14 @@ use Hitch\MaterializationInterface;
 
 class GD implements ModificationInterface, MaterializationInterface
 {
-    protected function load(Image &$image)
+    /**
+     * Load an image from a file into memory.
+     *
+     * @param Image $image The image to load
+     *
+     * @return void
+     */
+    protected function load(Image $image)
     {
         $path = $image->getOriginalPath();
         $data = getimagesize($path);
@@ -35,6 +42,15 @@ class GD implements ModificationInterface, MaterializationInterface
         $image->setData($resource, $this);
     }
 
+    /**
+     * Resize an image.
+     *
+     * @param Image $image    The image to resize
+     * @param integer $width  The intended width
+     * @param integer $height The intended height
+     *
+     * @return void
+     */
     public function resize(Image $image, $width, $height)
     {
         if (!$image->getData()) {
@@ -62,6 +78,15 @@ class GD implements ModificationInterface, MaterializationInterface
         $image->setHeight($height);
     }
 
+    /**
+     * Materialize an image.
+     *
+     * @param Image $image The image to materialize
+     *
+     * TODO: Implement
+     *
+     * @return string The materialized image
+     */
     public function materialize(Image $image)
     {
     }
