@@ -22,9 +22,25 @@ class Uploader
         return array();
     }
 
-    public function getVersionPath($name)
+    public function getBaseDir()
     {
-        return "";
+        return "images/";
+    }
+
+    public function getFilename(File $original, $version = null)
+    {
+        if (is_null($version)) {
+            return $original->getBasename();
+        }
+
+        $extension = $original->getExtension();
+        $base = $original->getBasename($extension);
+        return $base . $version . '.' . $extension;
+    }
+
+    public function getVersionPath(File $original, $version = null)
+    {
+        return $this->getBaseDir() . $this->getFilename($original, $version);
     }
 
     public function store(File $file)
@@ -34,7 +50,7 @@ class Uploader
         $versions = $this->makeVersions($image);
 
         foreach ($versions as $name => $version) {
-            $path = $this->getVersionPath($name);
+            $path = $this->getVersionPath($file, $name);
 
             foreach ($this->getStorageAdapters() as $storage) {
                 $storage->store($version, $path);

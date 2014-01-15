@@ -2,6 +2,7 @@
 namespace Hitch\Test;
 
 use Hitch\Uploader;
+use Symfony\Component\HttpFoundation\File\File;
 use Mockery as m;
 
 class UploaderTest extends TestCase
@@ -45,6 +46,33 @@ class UploaderTest extends TestCase
         $this->assertTrue(is_array($uploader->getVersionDescriptions()));
     }
 
+    public function testGetVersionPathIsSane()
+    {
+        $uploader = new Uploader;
+        $this->file->shouldReceive('getBasename')
+            ->with('png')
+            ->andReturn('image.');
+        $this->file->shouldReceive('getExtension')
+            ->andReturn('png');
+
+        $path = $uploader->getVersionPath($this->file, 'thumb');
+
+        $this->assertTrue(stristr($path, 'images/') !== false);
+        $this->assertTrue(stristr($path, 'image.thumb.png') !== false);
+    }
+
+    public function testGetVersionAllowsNoVersion()
+    {
+        $uploader = new Uploader;
+        $this->file->shouldReceive('getBasename')
+            ->andReturn('image.png');
+
+        $path = $uploader->getVersionPath($this->file);
+
+        $this->assertTrue(stristr($path, 'images/') !== false);
+        $this->assertTrue(stristr($path, 'image.png') !== false);
+    }
+
     public function testMakeVersionsUsesModifier()
     {
         $uploader = new SimpleUploader;
@@ -82,6 +110,8 @@ class UploaderTest extends TestCase
         );
         $uploader->modifier = $this->modifier;
         $uploader->storage = array($this->storage);
+
+        $this->file->shouldIgnoreMissing();
 
         $this->modifier->shouldReceive('resize')
             ->andReturn($images['thumb']);
@@ -130,9 +160,9 @@ class SimpleUploader extends Uploader
         return $this->storage;
     }
 
-    public function getVersionPath($name)
+    public function getVersionPath(File $file, $version = null)
     {
-        return isset($this->path) ? $this->path : parent::getVersionPath($name);
+        return isset($this->path) ? $this->path : parent::getVersionPath($file, $version);
     }
 
     public function getVersionDescriptions()
