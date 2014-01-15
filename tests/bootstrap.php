@@ -2,4 +2,4 @@
 
 $autoloader = require __DIR__ . "/../vendor/autoload.php";
 
-$autoloader->add("Bullclip\Test", __DIR__);
+$autoloader->add("Hitch\Test", __DIR__);

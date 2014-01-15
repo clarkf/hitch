@@ -6,8 +6,8 @@
          verbose="true"
          colors="true">
   <testsuites>
-    <testsuite name="Bullclip">
-      <directory suffix="Test.php">tests/Bullclip/Test</directory>
+    <testsuite name="Hitch">
+      <directory suffix="Test.php">tests/Hitch/Test</directory>
     </testsuite>
   </testsuites>
 
