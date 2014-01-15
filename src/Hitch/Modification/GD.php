@@ -24,19 +24,19 @@ class GD implements ModificationInterface, MaterializationInterface
 
         switch ($type)
         {
-        case IMAGETYPE_PNG:
-            $resource = imagecreatefrompng($path);
-            break;
-        case IMAGETYPE_JPEG:
-            $resource = imagecreatefromjpeg($path);
-            break;
-        case IMAGETYPE_GIF:
-            $resource = imagecreatefromgif($path);
-            break;
-        default:
-            throw new InvalidArgumentException(
-                "Unable to handle image: " . $path
-            );
+            case IMAGETYPE_PNG:
+                $resource = imagecreatefrompng($path);
+                break;
+            case IMAGETYPE_JPEG:
+                $resource = imagecreatefromjpeg($path);
+                break;
+            case IMAGETYPE_GIF:
+                $resource = imagecreatefromgif($path);
+                break;
+            default:
+                throw new InvalidArgumentException(
+                    "Unable to handle image: " . $path
+                );
         }
 
         $image->setData($resource, $this);
