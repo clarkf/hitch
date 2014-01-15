@@ -2,8 +2,9 @@
 namespace Hitch\Modification;
 
 use Hitch\Image;
+use Hitch\MaterializationInterface;
 
-class GD implements ModificationInterface
+class GD implements ModificationInterface, MaterializationInterface
 {
     protected function load(Image &$image)
     {
@@ -56,8 +57,12 @@ class GD implements ModificationInterface
             $image->getHeight()
         );
 
-        $image->setData($newCanvas);
+        $image->setData($newCanvas, $this);
         $image->setWidth($width);
         $image->setHeight($height);
+    }
+
+    public function materialize(Image $image)
+    {
     }
 }

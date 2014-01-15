@@ -40,6 +40,8 @@ class Image
      */
     protected $height = -1;
 
+    protected $materializer;
+
     /**
      * Set arbitrary data on the Image
      *
@@ -47,9 +49,10 @@ class Image
      *
      * @return void
      */
-    public function setData($data)
+    public function setData($data, $materializer)
     {
         $this->data = $data;
+        $this->materializer = $materializer;
     }
 
     /**
@@ -60,6 +63,11 @@ class Image
     public function getData()
     {
         return $this->data;
+    }
+
+    public function getMaterializer()
+    {
+        return $this->materializer;
     }
 
     /**

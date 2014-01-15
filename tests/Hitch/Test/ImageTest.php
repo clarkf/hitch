@@ -10,9 +10,11 @@ class ImageTest extends TestCase
     {
         $image = new Image;
         $data = uniqid();
+        $materializer = m::mock('Hitch\MaterializationInterface');
 
-        $image->setData($data);
+        $image->setData($data, $materializer);
         $this->assertEquals($data, $image->getData());
+        $this->assertEquals($materializer, $image->getMaterializer());
     }
 
     public function testItCanBeCreatedFromAFile()
