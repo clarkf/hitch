@@ -15,7 +15,7 @@ class Uploader
      */
     public function getStorageAdapters()
     {
-        return array(new FileStorage);
+        return array(new FileStorage(sys_get_temp_dir()));
     }
 
     /**
