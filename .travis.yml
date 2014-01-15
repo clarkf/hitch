@@ -11,8 +11,6 @@ before_script:
 
 script:
   - ./vendor/bin/phpunit
-  - make sniff
-  - make mess
 
 after_script:
   - php vendor/bin/coveralls
