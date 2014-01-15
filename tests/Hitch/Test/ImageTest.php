@@ -44,4 +44,15 @@ class ImageTest extends TestCase
 
         $this->assertEquals($path, $image->getOriginalPath());
     }
+
+    public function testItHasWidthAndHeightSettersAndGetters()
+    {
+        $image = new Image;
+
+        $image->setWidth(10);
+        $this->assertEquals(10, $image->getWidth());
+
+        $image->setHeight(20);
+        $this->assertEquals(20, $image->getHeight());
+    }
 }

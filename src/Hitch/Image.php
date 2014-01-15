@@ -31,6 +31,16 @@ class Image
     protected $originalPath;
 
     /**
+     * @var integer The image's width
+     */
+    protected $width = -1;
+
+    /**
+     * @var integer The image's height
+     */
+    protected $height = -1;
+
+    /**
      * Set arbitrary data on the Image
      *
      * @param mixed $data
@@ -72,5 +82,25 @@ class Image
     public function getOriginalPath()
     {
         return $this->originalPath;
+    }
+
+    public function setWidth($width)
+    {
+        $this->width = (int) $width;
+    }
+
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    public function setHeight($height)
+    {
+        $this->height = (int) $height;
+    }
+
+    public function getHeight()
+    {
+        return $this->height;
     }
 }
