@@ -9,5 +9,10 @@ before_script:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
 
+script:
+  - ./vendor/bin/phpunit
+  - make sniff
+  - make mess
+
 after_script:
   - php vendor/bin/coveralls
