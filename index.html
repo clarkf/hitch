@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Hitch by clarkf</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Hitch</h1>
+        <h2>Handle images in your webapp with ease</h2>
+        <a href="https://github.com/clarkf/hitch" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="hitch" class="anchor" href="#hitch"><span class="octicon octicon-link"></span></a>Hitch</h1>
+
+<p><a href="https://travis-ci.org/clarkf/hitch"><img src="https://travis-ci.org/clarkf/hitch.png?branch=master" alt="Build Status"></a>
+<a href="https://packagist.org/packages/clarkf/hitch"><img src="https://poser.pugx.org/clarkf/hitch/v/stable.png" alt="Latest Stable Version"></a>
+<a href="https://www.versioneye.com/user/projects/52d6d684ec137507080009a2"><img src="https://www.versioneye.com/user/projects/52d6d684ec137507080009a2/badge.png" alt="Dependency Status"></a>
+<a href="https://coveralls.io/r/clarkf/hitch"><img src="https://coveralls.io/repos/clarkf/hitch/badge.png" alt="Coverage Status"></a></p>
+
+<p><strong>Table of Contents</strong></p>
+
+<ol>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#use">Use</a>
+
+<ol>
+<li>
+<a href="#configuration">Configuration</a>
+
+<ol>
+<li><a href="#version-descriptions">Version Descriptions</a></li>
+<li><a href="#storage-adapters">Storage Adapters</a></li>
+</ol>
+</li>
+<li><a href="#uploading">Uploading</a></li>
+</ol>
+</li>
+</ol><h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add the following to your <code>composer.json</code> file's <code>require</code> property:</p>
+
+<div class="highlight highlight-JSON"><pre>    <span class="s2">"clarkf/hitch"</span><span class="err">:</span> <span class="s2">"@dev-master"</span>
+</pre></div>
+
+<p><strong><em>Note</em></strong>: Hitch is currently alpha software.  Requiring <code>@dev-master</code>
+will load Hitch into your project, but will not guarantee stability.
+Use at your own risk.  Or wait until a version is tagged.</p>
+
+<h2>
+<a name="use" class="anchor" href="#use"><span class="octicon octicon-link"></span></a>Use</h2>
+
+<h3>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
+
+<p>Instantiate a new <code>Hitch\Uploader</code> for each image type you'd like to
+manage.  It's suggested that you extend the class to provide your own
+configuration:</p>
+
+<div class="highlight highlight-PHP"><pre><span class="k">class</span> <span class="nc">ImageUploader</span> <span class="k">extends</span> <span class="nx">\Hitch\Uploader</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getBaseDir</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Override getBaseDir() to provide the folder you'd like to</span>
+        <span class="c1">// store this image type in.</span>
+        <span class="k">return</span> <span class="s2">"images/covers"</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getVersionDescriptions</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Provide your own version descriptions here</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getStorageAdapters</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// Provide your own storage adapter(s) here</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>
+<a name="version-descriptions" class="anchor" href="#version-descriptions"><span class="octicon octicon-link"></span></a>Version Descriptions</h4>
+
+<p>A version description is simply a description of what processes an image
+needs to go through in order to be deemed a specific 'version' of an
+image.  For example, for an image to be considered a thumbnail, it needs
+to be resized down to a specific size (say, 100x100):</p>
+
+<div class="highlight highlight-PHP"><pre><span class="k">public</span> <span class="k">function</span> <span class="nf">getVersionDescriptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+        <span class="s1">'thumb'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s1">'resize'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4>
+<a name="storage-adapters" class="anchor" href="#storage-adapters"><span class="octicon octicon-link"></span></a>Storage Adapters</h4>
+
+<p>A storage adapter is a mechanism that stores an image somewhere.
+Currently, the only adapter shipped is the <code>Hitch\Storage\File</code>, which
+writes the image to your local filesystem.</p>
+
+<p>Say we want to store all images in <code>./public/media</code>, and we want each
+image in a dated subdirectory:</p>
+
+<div class="highlight highlight-PHP"><pre><span class="k">class</span> <span class="nc">ImageUploader</span> <span class="k">extends</span> <span class="nx">\Hitch\Uploader</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getStorageAdapters</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+            <span class="c1">// The first parameter passed to the constructor here is the</span>
+            <span class="c1">// 'base directory' in which to store all media</span>
+            <span class="k">new</span> <span class="nx">\Hitch\Storage\File</span><span class="p">(</span><span class="s1">'./public/media'</span><span class="p">)</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">getBaseDir</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">date</span><span class="p">(</span><span class="s1">'Y-m-d'</span><span class="p">)</span> <span class="o">.</span> <span class="s1">'/'</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>If you then upload <code>mygreatjpeg.jpg</code>, it would end up at
+<code>./public/media/2014-01-15/mygreatjpeg.jpg</code> (assuming that today is
+January 15th).</p>
+
+<h3>
+<a name="uploading" class="anchor" href="#uploading"><span class="octicon octicon-link"></span></a>Uploading</h3>
+
+<p>To upload a file and generate all requisite versions, you must simply
+pass a <code>Symfony\Component\HttpFoundation\File\File</code> instance to your
+uploader's <code>store</code> method.</p>
+
+<p>In the example below, we have some sort of an ORM-style Model class,
+that uses custom setters patterned after <code>setXXXAttribute()</code>:</p>
+
+<div class="highlight highlight-PHP"><pre><span class="k">use</span> <span class="nx">Symfony\Component\HttpFoundation\File\File</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">MyModel</span> <span class="k">extends</span> <span class="nx">BaseModelClass</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="nv">$uploader</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">(</span><span class="cm">/* ... */</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// ...</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uploader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ImageUploader</span><span class="p">;</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ...</span>
+
+    <span class="sd">/**</span>
+<span class="sd">     * Set this instance's `file` attribute (i.e. $model-&gt;file = $file).</span>
+<span class="sd">     * </span>
+<span class="sd">     * @param File $file The input file</span>
+<span class="sd">     * </span>
+<span class="sd">     * @return void</span>
+<span class="sd">     */</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="nf">setImageAttribute</span><span class="p">(</span><span class="nx">File</span> <span class="nv">$file</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uploader</span><span class="o">-&gt;</span><span class="na">store</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>And that's it!</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/clarkf/hitch/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/clarkf/hitch/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/clarkf/hitch"></a> is maintained by <a href="https://github.com/clarkf">clarkf</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-47170891-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
