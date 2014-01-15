@@ -12,6 +12,9 @@ class UploaderTest extends TestCase
         $this->modifier = m::mock('Hitch\Modification\ModificationInterface');
         $this->storage = m::mock('Hitch\Storage\StorageInterface');
         $this->file = m::mock('Symfony\Component\HttpFoundation\File\File');
+
+        $this->file->shouldReceive('__toString')
+            ->andReturn(uniqid());
     }
 
     public function testGetStorageAdapterReturnsStorageAdapters()
