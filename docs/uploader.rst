@@ -1,6 +1,29 @@
 The Uploader
 ============
 
+The Uploader is the core of Hitch.  It directs your application how and
+where to store files.  Simply define an uploader by extending
+``Hitch\Uploader``.
+
+.. code-block:: php
+
+   class MyUploader extends \Hitch\Uploader {}
+
+The most important method provided by an uploader is its ``store()``
+method.  Simply provide a ``File`` object, and Hitch will take care of
+the rest:
+
+.. code-block:: php
+
+   public function controllerAction()
+   {
+        $file = $this->getRequest()->getFile('file');
+
+        $uploader = new MyUploader();
+
+        $uploader->store($file);
+   }
+
 Storage Adapters
 ----------------
 
@@ -11,9 +34,18 @@ the uploader's ``getStorageAdapters()`` method:
 .. literalinclude:: examples/getstorageadapters.php
    :language: php
 
-Available storage adapters:
 
-* ``Hitch\Storage\File`` - Store files to the local filesystem.
+File Storage Adapter
+^^^^^^^^^^^^^^^^^^^^
+
+``Hitch\Storage\File`` provides a means to store a file on the local
+filesystem. It's also the default storage adapter. Simply pass the *root
+upload directory* as the constructor, and your files will be stored:
+
+.. code-block:: php
+
+   new \Hitch\Storage\File($root . "/public/images/");
+
 
 Version Descriptions
 --------------------
@@ -24,9 +56,40 @@ files for you.  You must describe each version that you require:
 .. literalinclude:: examples/versiondescriptions.php
    :language: php
 
+
+``resize`` process
+^^^^^^^^^^^^^^^^^^
+resize an image to *exactly* the supplied dimensions
+
+
+.. code-block:: php
+
+    "resize" => array(100, 100)
+
+.. image:: media/original.jpg
+
+becomes
+
+.. image:: media/resize.100x100.jpg
+
+``resizeKeepAspect`` process
+^^^^^^^^^^^^^^^^^^
+
+Resize an image while maintaining its aspect ratio.
+
+
+.. code-block:: php
+
+    "resizeKeepAspect" => array(100, 100)
+
+.. image:: media/original.jpg
+
+becomes
+
+.. image:: media/resizeKeepAspect.100x100.jpg
+
 Available processes:
 
-* ``resize($width, $height)`` - Resizes the image
 * ``resizeKeepAspect($width, $height)`` - Resize the image to the
   specified size, while keeping the aspect ratio
 
