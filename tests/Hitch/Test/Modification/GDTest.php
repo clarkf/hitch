@@ -85,4 +85,18 @@ class GDTest extends TestCase
 
         $this->assertEquals(100, $this->image->getWidth());
     }
+
+    public function testMaterialize()
+    {
+        $image = imagecreatetruecolor(100, 100);
+        $modifier = new GD;
+        $this->image->setData($image, $modifier);
+
+        // buffer and return image
+        ob_start();
+        imagepng($image);
+        $contents = ob_get_clean();
+
+        $this->assertEquals($contents, $modifier->materialize($this->image));
+    }
 }

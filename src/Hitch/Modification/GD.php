@@ -113,11 +113,17 @@ class GD implements ModificationInterface, MaterializationInterface
      *
      * @param Image $image The image to materialize
      *
-     * TODO: Implement
-     *
      * @return string The materialized image
      */
     public function materialize(Image $image)
     {
+        $imageHandle = $image->getData();
+
+        // Buffer the output, and output the image data to it
+        ob_start();
+        imagepng($imageHandle);
+
+        // Return the outputted image data
+        return ob_get_clean();
     }
 }
