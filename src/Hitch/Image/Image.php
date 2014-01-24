@@ -95,6 +95,16 @@ abstract class Image
     }
 
     /**
+     * Get the path to the image file.
+     *
+     * @return string The path to the image file
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * Get the binary contents of the underlying image
      *
      * @return string The binary string containing the contents of the image.
