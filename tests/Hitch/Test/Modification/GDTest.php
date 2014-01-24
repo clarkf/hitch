@@ -5,6 +5,7 @@ namespace Hitch\Test\Modification;
 use Hitch\Test\TestCase;
 use Mockery as m;
 use Hitch\Modification\GD;
+use Hitch\Image\GDImage;
 
 class GDTest extends TestCase
 {
@@ -12,12 +13,10 @@ class GDTest extends TestCase
     {
         parent::setup();
 
-        $this->image = m::mock("Hitch\Image")
-            ->shouldDeferMissing();
-        $this->image->setOriginalPath(__DIR__ . "/fixtures/image.png");
+        $this->image = new GDImage(__DIR__ . "/fixtures/image.png");
     }
 
-    public function testResizeSetsNewDimensions()
+    public function testResizeResizesResource()
     {
         $width = 100;
         $height = 200;
@@ -27,15 +26,6 @@ class GDTest extends TestCase
 
         $this->assertEquals(100, $this->image->getWidth());
         $this->assertEquals(200, $this->image->getHeight());
-    }
-
-    public function testResizeResizesResource()
-    {
-        $modifier = new GD;
-        $modifier->resize($this->image, 100, 200);
-        $resource = $this->image->getData();
-        $this->assertEquals(100, imagesx($resource));
-        $this->assertEquals(200, imagesy($resource));
     }
 
     public function testResizeKeepAspectRatioRetainsAspectRatio()
@@ -55,8 +45,7 @@ class GDTest extends TestCase
 
     public function testResizeKeepAspectResizesVertically()
     {
-        $this->image->setWidth(100);
-        $this->image->setHeight(200);
+        $this->image = new GDImage(__DIR__ . "/fixtures/tall.png");
 
         $modifier = new GD;
         $modifier->resizeKeepAspect($this->image, 100, 100);
@@ -66,8 +55,7 @@ class GDTest extends TestCase
 
     public function testResizeKeepAspectResizesHorizontally()
     {
-        $this->image->setWidth(200);
-        $this->image->setHeight(100);
+        $this->image = new GDImage(__DIR__ . "/fixtures/wide.png");
 
         $modifier = new GD;
         $modifier->resizeKeepAspect($this->image, 100, 100);
@@ -77,26 +65,11 @@ class GDTest extends TestCase
 
     public function testResizeKeepAspectResizesOtherDimension()
     {
-        $this->image->setWidth(400);
-        $this->image->setHeight(100);
+        $this->image = new GDImage(__DIR__ . "/fixtures/wide.png");
 
         $modifier = new GD;
         $modifier->resizeKeepAspect($this->image, 100, 100);
 
-        $this->assertEquals(100, $this->image->getWidth());
-    }
-
-    public function testMaterialize()
-    {
-        $image = imagecreatetruecolor(100, 100);
-        $modifier = new GD;
-        $this->image->setData($image, $modifier);
-
-        // buffer and return image
-        ob_start();
-        imagepng($image);
-        $contents = ob_get_clean();
-
-        $this->assertEquals($contents, $modifier->materialize($this->image));
+        $this->assertEquals(33, $this->image->getHeight());
     }
 }

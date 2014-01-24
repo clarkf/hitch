@@ -1,7 +1,7 @@
 <?php
 namespace Hitch\Modification;
 
-use Hitch\Image;
+use Hitch\Image\GDImage as Image;
 
 interface ModificationInterface
 {

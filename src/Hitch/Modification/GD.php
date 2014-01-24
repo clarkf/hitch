@@ -1,47 +1,10 @@
 <?php
 namespace Hitch\Modification;
 
-use Hitch\Image;
-use Hitch\MaterializationInterface;
+use Hitch\Image\GDImage as Image;
 
-class GD implements ModificationInterface, MaterializationInterface
+class GD implements ModificationInterface
 {
-    /**
-     * Load an image from a file into memory.
-     *
-     * @param Image $image The image to load
-     *
-     * @return void
-     */
-    protected function load(Image $image)
-    {
-        $path = $image->getOriginalPath();
-        $data = getimagesize($path);
-        list($width, $height, $type) = $data;
-
-        $image->setWidth($width);
-        $image->setHeight($height);
-
-        switch ($type)
-        {
-            case IMAGETYPE_PNG:
-                $resource = imagecreatefrompng($path);
-                break;
-            case IMAGETYPE_JPEG:
-                $resource = imagecreatefromjpeg($path);
-                break;
-            case IMAGETYPE_GIF:
-                $resource = imagecreatefromgif($path);
-                break;
-            default:
-                throw new InvalidArgumentException(
-                    "Unable to handle image: " . $path
-                );
-        }
-
-        $image->setData($resource, $this);
-    }
-
     /**
      * Resize an image.
      *
@@ -53,11 +16,7 @@ class GD implements ModificationInterface, MaterializationInterface
      */
     public function resize(Image $image, $width, $height)
     {
-        if (!$image->getData()) {
-            $this->load($image);
-        }
-
-        $resource = $image->getData();
+        $resource = $image->getResource();
 
         $newCanvas = imagecreatetruecolor($width, $height);
         imagecopyresized(
@@ -73,9 +32,7 @@ class GD implements ModificationInterface, MaterializationInterface
             $image->getHeight()
         );
 
-        $image->setData($newCanvas, $this);
-        $image->setWidth($width);
-        $image->setHeight($height);
+        $image->setResource($newCanvas);
     }
 
     /**
@@ -106,24 +63,5 @@ class GD implements ModificationInterface, MaterializationInterface
         }
 
         return $this->resize($image, $width, $height);
-    }
-
-    /**
-     * Materialize an image.
-     *
-     * @param Image $image The image to materialize
-     *
-     * @return string The materialized image
-     */
-    public function materialize(Image $image)
-    {
-        $imageHandle = $image->getData();
-
-        // Buffer the output, and output the image data to it
-        ob_start();
-        imagepng($imageHandle);
-
-        // Return the outputted image data
-        return ob_get_clean();
     }
 }
