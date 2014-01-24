@@ -54,4 +54,17 @@ class GDImageTest extends TestCase
         $image->setResource($resource);
         $this->assertSame($resource, $image->getResource());
     }
+
+    public function testItWillReturnItsContents()
+    {
+        $image = new GDImage(__DIR__ . "/fixtures/image.png");
+
+        // This sucks.  I hate it.
+        $actual = imagecreatefrompng(__DIR__ . "/fixtures/image.png");
+        ob_start();
+        imagepng($actual);
+        $expected = ob_get_clean();
+
+        $this->assertEquals($expected, $image->getContents());
+    }
 }

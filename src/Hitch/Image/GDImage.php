@@ -76,4 +76,19 @@ class GDImage extends Image
 
         return $this->resource;
     }
+
+    /**
+     * Get the binary contents of the underlying image
+     *
+     * @return string The binary string containing the contents of the image.
+     */
+    public function getContents()
+    {
+        ob_start();
+        switch ($this->getType()) {
+            case self::TYPE_PNG:
+                imagepng($this->getResource());
+        }
+        return ob_get_clean();
+    }
 }
