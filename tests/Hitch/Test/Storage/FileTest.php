@@ -1,9 +1,10 @@
 <?php
 namespace Hitch\Test\Storage;
+// @codingStandardsIgnoreFile
 
 use Hitch\Test\TestCase;
 use Mockery as m;
-use Hitch\Image;
+use Hitch\Image\GDImage;
 use Hitch\Storage\File;
 
 class FileTest extends TestCase
@@ -13,8 +14,8 @@ class FileTest extends TestCase
         parent::setup();
 
         $this->materializer = m::mock("Hitch\MaterializationInterface");
-        $this->image = new Image;
-        $this->image->setData(uniqid(), $this->materializer);
+        $this->image = new GDImage(__DIR__ . "/../Modification/fixtures/image.png");
+        $this->image->setResource(imagecreatetruecolor(1,1));
 
         $this->path = tempnam(sys_get_temp_dir(), 'image_');
         $this->root = dirname($this->path);
@@ -29,23 +30,10 @@ class FileTest extends TestCase
         parent::teardown();
     }
 
-    public function testItUsesMaterializer()
-    {
-        $file = new File($this->root);
-
-        $this->materializer->shouldReceive('materialize')->once()
-            ->with($this->image);
-
-        $file->store($this->image, $this->filename);
-    }
-
     public function testItWritesToDestination()
     {
         $file = new File($this->root);
 
-        $this->materializer->shouldReceive('materialize')
-            ->with($this->image)
-            ->andReturn(uniqid());
 
         $file->store($this->image, $this->filename);
         $this->assertGreaterThan(0, filesize($this->path));
@@ -54,15 +42,10 @@ class FileTest extends TestCase
     public function testItWritesDataToDestination()
     {
         $file = new File($this->root);
-        $data = 'Hello World!';
-
-        $this->materializer->shouldReceive('materialize')->once()
-            ->with($this->image)
-            ->andReturn($data);
 
         $file->store($this->image, $this->filename);
 
-        $this->assertEquals($data, file_get_contents($this->path));
+        $this->assertEquals($this->image->getContents(), file_get_contents($this->path));
     }
 
     public function testItWillCreateNecessarySubdirectories()

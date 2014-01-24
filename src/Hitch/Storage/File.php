@@ -1,7 +1,7 @@
 <?php
 namespace Hitch\Storage;
 
-use Hitch\Image;
+use Hitch\Image\Image;
 
 class File implements StorageInterface
 {
@@ -30,8 +30,7 @@ class File implements StorageInterface
      */
     public function store(Image $image, $relativePath)
     {
-        $materializer = $image->getMaterializer();
-        $data = $materializer->materialize($image);
+        $data = $image->getContents();
 
         $path = $this->root . DIRECTORY_SEPARATOR . $relativePath;
         $directory = dirname($path);

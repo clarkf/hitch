@@ -1,7 +1,7 @@
 <?php
 namespace Hitch\Storage;
 
-use Hitch\Image;
+use Hitch\Image\Image;
 
 interface StorageInterface
 {
