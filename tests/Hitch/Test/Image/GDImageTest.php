@@ -27,4 +27,19 @@ class GDImageTest extends TestCase
         $image = new GDImage(__FILE__);
         $this->assertNull($image->getType());
     }
+
+    public function testItCanGetTheResource()
+    {
+        $image = new GDImage(__DIR__ . "/fixtures/image.png");
+        $this->assertTrue(is_resource($image->getResource()));
+
+        $image = new GDImage(__DIR__ . "/fixtures/image.jpg");
+        $this->assertTrue(is_resource($image->getResource()));
+
+        $image = new GDImage(__DIR__ . "/fixtures/image.gif");
+        $this->assertTrue(is_resource($image->getResource()));
+
+        $image = new GDImage(__FILE__);
+        $this->assertNull($image->getResource());
+    }
 }

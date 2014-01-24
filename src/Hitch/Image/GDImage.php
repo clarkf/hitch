@@ -25,4 +25,24 @@ class GDImage extends Image
         // Unknown image type
         return null;
     }
+
+    /**
+     * Get the underlying image resource
+     *
+     * @return resource The underlying image resource
+     */
+    public function getResource()
+    {
+        switch ($this->getType()) {
+            case self::TYPE_PNG:
+                return imagecreatefrompng($this->path);
+                break;
+            case self::TYPE_JPG:
+                return imagecreatefromjpeg($this->path);
+                break;
+            case self::TYPE_GIF:
+                return imagecreatefromgif($this->path);
+                break;
+        }
+    }
 }
