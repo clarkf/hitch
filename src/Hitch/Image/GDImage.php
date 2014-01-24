@@ -3,6 +3,9 @@ namespace Hitch\Image;
 
 class GDImage extends Image
 {
+    /**
+     * @var resource $resource The underlying resource
+     */
     protected $resource;
 
     /**
@@ -27,11 +30,11 @@ class GDImage extends Image
     }
 
     /**
-     * Get the underlying image resource
+     * Load the resource from the filesystem
      *
-     * @return resource The underlying image resource
+     * @return resource The gd resource
      */
-    public function getResource()
+    public function loadResource()
     {
         switch ($this->getType()) {
             case self::TYPE_PNG:
@@ -44,5 +47,33 @@ class GDImage extends Image
                 return imagecreatefromgif($this->path);
                 break;
         }
+    }
+
+    /**
+     * Set the underlying resource
+     *
+     * @param resource $resource The resource
+     *
+     * @return void
+     */
+    public function setResource($resource)
+    {
+        $this->resource = $resource;
+    }
+
+    /**
+     * Get the underlying image resource
+     *
+     * @return resource The underlying image resource
+     */
+    public function getResource()
+    {
+        // Check to see if the resource is unset, in which case we should
+        // load it.
+        if (!isset($this->resource)) {
+            $this->resource = $this->loadResource();
+        }
+
+        return $this->resource;
     }
 }
