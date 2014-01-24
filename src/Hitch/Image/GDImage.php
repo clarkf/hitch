@@ -88,6 +88,13 @@ class GDImage extends Image
         switch ($this->getType()) {
             case self::TYPE_PNG:
                 imagepng($this->getResource());
+                break;
+            case self::TYPE_JPG:
+                imagejpeg($this->getResource());
+                break;
+            case self::TYPE_GIF:
+                imagegif($this->getResource());
+                break;
         }
         return ob_get_clean();
     }

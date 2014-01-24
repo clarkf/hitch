@@ -57,14 +57,24 @@ class GDImageTest extends TestCase
 
     public function testItWillReturnItsContents()
     {
-        $image = new GDImage(__DIR__ . "/fixtures/image.png");
+        $types = array(
+            'png' => 'png',
+            'jpg' => 'jpeg',
+            'gif' => 'gif'
+        );
 
-        // This sucks.  I hate it.
-        $actual = imagecreatefrompng(__DIR__ . "/fixtures/image.png");
-        ob_start();
-        imagepng($actual);
-        $expected = ob_get_clean();
+        foreach ($types as $ext => $command) {
+            $image = new GDImage(__DIR__ . "/fixtures/image." . $ext);
+            $in = "imagecreatefrom" . $command;
+            $out = "image" . $command;
 
-        $this->assertEquals($expected, $image->getContents());
+            // This sucks.  I hate it.
+            $actual = $in(__DIR__ . "/fixtures/image." . $ext);
+            ob_start();
+            $out($actual);
+            $expected = ob_get_clean();
+
+            $this->assertEquals($expected, $image->getContents());
+        }
     }
 }
