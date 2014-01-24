@@ -3,6 +3,10 @@ namespace Hitch\Image;
 
 abstract class Image
 {
+    const TYPE_PNG = 1;
+    const TYPE_JPG = 2;
+    const TYPE_GIF = 3;
+
     /**
      * @var $width The width
      */
