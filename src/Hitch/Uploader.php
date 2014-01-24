@@ -118,6 +118,8 @@ class Uploader
     /**
      * Generate the versions of the image specified by getVersionDescriptions().
      *
+     * @param Image $image The image
+     *
      * @return array A key/value array containing the versions
      */
     public function makeVersions(Image $image)

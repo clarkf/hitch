@@ -5,6 +5,17 @@ use Hitch\Image;
 
 interface ModificationInterface
 {
+    /**
+     * Resize an image without regard to its original aspect ratio.
+     *
+     * @param Image   $image  The image to resize
+     * @param integer $width  The intended width
+     * @param integer $height The intended height
+     *
+     * @return void
+     *
+     * @see resizeKeepAspect()
+     */
     public function resize(Image $image, $width, $height);
 
     /**
@@ -18,6 +29,8 @@ interface ModificationInterface
      * @param integer $height The maximum height
      *
      * @return void
+     *
+     * @see resize()
      */
     public function resizeKeepAspect(Image $image, $width, $height);
 }

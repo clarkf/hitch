@@ -45,7 +45,7 @@ class GD implements ModificationInterface, MaterializationInterface
     /**
      * Resize an image.
      *
-     * @param Image $image    The image to resize
+     * @param Image   $image  The image to resize
      * @param integer $width  The intended width
      * @param integer $height The intended height
      *

@@ -40,12 +40,16 @@ class Image
      */
     protected $height = -1;
 
+    /**
+     * @var MaterializationInterface The materializer associated with $data
+     */
     protected $materializer;
 
     /**
      * Set arbitrary data on the Image
      *
-     * @param mixed $data
+     * @param mixed                    $data         The data to set
+     * @param MaterializationInterface $materializer The materializer
      *
      * @return void
      */
@@ -65,6 +69,12 @@ class Image
         return $this->data;
     }
 
+    /**
+     * Get the {@link MaterializationInterface} associated with the underlying
+     * data.
+     *
+     * @return MaterializationInterface The materializer
+     */
     public function getMaterializer()
     {
         return $this->materializer;
@@ -92,21 +102,51 @@ class Image
         return $this->originalPath;
     }
 
+    /**
+     * Store the width of the image.
+     *
+     * Note that this does not change the underlying image, just the cached
+     * value of the dimensions.
+     *
+     * @param integer $width The width
+     *
+     * @return void
+     */
     public function setWidth($width)
     {
         $this->width = (int) $width;
     }
 
+    /**
+     * Get the width of the image.
+     *
+     * @return integer The width of the image
+     */
     public function getWidth()
     {
         return $this->width;
     }
 
+    /**
+     * Store the height of the image.
+     *
+     * Note that this does not change the underlying image, just the cached
+     * value of the dimensions.
+     *
+     * @param integer $height The height
+     *
+     * @return void
+     */
     public function setHeight($height)
     {
         $this->height = (int) $height;
     }
 
+    /**
+     * Get the height of the image.
+     *
+     * @return integer The height of the image
+     */
     public function getHeight()
     {
         return $this->height;
