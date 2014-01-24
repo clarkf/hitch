@@ -80,10 +80,10 @@ class UploaderTest extends TestCase
     {
         $uploader = new SimpleUploader;
         $uploader->modifier = $this->modifier;
-        $image = m::mock('Hitch\Image');
+        $image = m::mock('Hitch\Image\GDImage');
 
         $this->modifier->shouldReceive('resize')->once()
-            ->with(m::type('Hitch\Image'), 100, 100)
+            ->with(m::type('Hitch\Image\GDImage'), 100, 100)
             ->andReturn($image);
 
         $uploader->makeVersions($image);
@@ -93,7 +93,7 @@ class UploaderTest extends TestCase
     {
         $uploader = new SimpleUploader;
         $uploader->modifier = $this->modifier;
-        $image = m::mock('Hitch\Image');
+        $image = m::mock('Hitch\Image\GDImage');
 
         $this->modifier->shouldReceive('resize')->once()
             ->andReturn($image);
@@ -109,7 +109,7 @@ class UploaderTest extends TestCase
     {
         $uploader = new SimpleUploader;
         $images = array(
-            'thumb' => m::mock('Hitch\Image')
+            'thumb' => m::mock('Hitch\Image\Image')
         );
         $uploader->modifier = $this->modifier;
         $uploader->storage = array($this->storage);
@@ -120,7 +120,7 @@ class UploaderTest extends TestCase
             ->andReturn($images['thumb']);
 
         $this->storage->shouldReceive('store')->once()
-            ->with(m::type('Hitch\Image'), m::any());
+            ->with(m::type('Hitch\Image\Image'), m::any());
 
         $uploader->store($this->file);
     }
@@ -129,7 +129,7 @@ class UploaderTest extends TestCase
     {
         $uploader = new SimpleUploader;
         $images = array(
-            'thumb' => m::mock('Hitch\Image')
+            'thumb' => m::mock('Hitch\Image\Image')
         );
         $uploader->modifier = $this->modifier;
         $uploader->storage = array($this->storage);

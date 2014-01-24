@@ -4,6 +4,8 @@ namespace Hitch;
 use Symfony\Component\HttpFoundation\File\File;
 use Hitch\Storage\File as FileStorage;
 use Hitch\Modification\GD as GDModifier;
+use Hitch\Image\Image;
+use Hitch\Image\GDImage;
 
 class Uploader
 {
@@ -102,7 +104,7 @@ class Uploader
      */
     public function store(File $file)
     {
-        $image = Image::make($file);
+        $image = new GDImage((string) $file);
 
         $versions = $this->makeVersions($image);
 
