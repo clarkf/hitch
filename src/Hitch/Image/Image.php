@@ -93,4 +93,11 @@ abstract class Image
         $this->setWidth($width);
         $this->setHeight($height);
     }
+
+    /**
+     * Get the binary contents of the underlying image
+     *
+     * @return string The binary string containing the contents of the image.
+     */
+    abstract public function getContents();
 }

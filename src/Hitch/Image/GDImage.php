@@ -9,6 +9,26 @@ class GDImage extends Image
     protected $resource;
 
     /**
+     * Get the width of the image.
+     *
+     * @return integer The width
+     */
+    public function getWidth()
+    {
+        return imagesx($this->getResource());
+    }
+
+    /**
+     * Get the height of the image.
+     *
+     * @return integer The height
+     */
+    public function getHeight()
+    {
+        return imagesy($this->getResource());
+    }
+
+    /**
      * Get the type of the underlying image resource.
      *
      * @return integer The type

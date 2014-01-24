@@ -12,6 +12,13 @@ class GDImageTest extends TestCase
         $this->assertInstanceOf("Hitch\Image\Image", new GDImage(""));
     }
 
+    public function testItCanGetDimensions()
+    {
+        $image = new GDImage(__DIR__ . "/fixtures/image.png");
+        $this->assertEquals(100, $image->getWidth());
+        $this->assertEquals(100, $image->getHeight());
+    }
+
     public function testItCanDetermineItsType()
     {
         $image = new GDImage(__DIR__ . "/fixtures/image.png");
